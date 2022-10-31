@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // call private function with players name and their choice
         const _play = (player, choice) => {    
             // call function inside of play
-            _choose(player, choice)
+            
         }
 
         const listen = (playerOne, playerTwo) =>{
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             let choice = event.target.getAttribute("index")
 
                             // Pass to function
-                            _play(playerCurrent, choice)
+                            _choose(playerCurrent, choice)
                         }
                     }  
                 }
@@ -177,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // check for form being submitted
             formAgain.addEventListener('submit', (event)=>{
-                console.log(event)
                  // stop submit
                 event.preventDefault();
 
@@ -200,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // the game will now continue as long as yes is clicked
                 // users will alternate goes
             })
+            // reload page to change names
             document.addEventListener('click', (event)=>{
                 if(event.target.className == "newNames"){
                     location.reload();
