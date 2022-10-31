@@ -5,12 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const Player = (name, piece) => {
         return {name, piece}
     }
+    let playerOne
+    let playerTwo
 
     // get items for making input form float on screen
     formNames = document.querySelector('.formNames')
     backForm = document.querySelector('.backForm')
     // play again form
-    formAgain = document.querySelector('formAgain')
+    formAgain = document.querySelector('.formAgain')
 
     // check for form submission and save names
     formNames.addEventListener('submit', (event)=>{
@@ -21,15 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let one = formNames.one.value
         let two = formNames.two.value
 
-        // hide from
+        // hide form
         formNames.style.display = "none"
         formNames.style.visibility = "hidden"
         backForm.style.display = "none"
         backForm.style.visibility = "hidden"
 
         // create players from inputted name
-        const playerOne = Player(one, "X")
-        const playerTwo = Player(two, "O")
+        playerOne = Player(one, "X")
+        playerTwo = Player(two, "O")
 
         // set second player first so it's skipped within logic
         let last = "O"
@@ -38,10 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // listen for clicked square
         document.addEventListener('click',(event)=>{
             if(event.target.className == "square"){
+                // check for empty square
                 if(!event.target.hasChildNodes()){ 
+
                     // check game hasn't finished
                     if(!GameBoard.gameOver()){
-                        // update DOM where possible
+
+                        // update DOM
                         last == "O" ? last = "X" : last = "O";
                         let p = document.createElement("p")
                         p.textContent = last
@@ -79,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // update board, 
-        const updateBoard = function(player, slot){
+        const updateBoard = function(player, slot){   
             if(_board[slot] == ""){
                 _board[slot] = player.name
             }
@@ -144,12 +149,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 let outcome = document.querySelector('.outcome')
                 let winner = GameBoard.checkWinner()
                 outcome.textContent = winner
+
+                setTimeout(function() { again() }, 2000);
             }
         }
         // call private function with players name and their choice
         const play = (player, choice) => {    
             // call function inside of play
             _choose(player, choice)
+        }
+
+        const again = (name) => {
+            backForm.style.display = "grid"
+            backForm.style.visibility = "visible"
+            formAgain.style.display = "flex"
+            formAgain.style.visibility = "visible"
+
+            formAgain.addEventListener('submit', (event)=>{
+                event.preventDefault
+                // wipe board clean
+                // give the object of each player
+                console.log(playerOne, playerTwo)
+            })
         }
         return {play}
     })()
