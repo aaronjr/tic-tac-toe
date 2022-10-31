@@ -41,13 +41,19 @@ body{
     place-items: center;
 }
 
-form{
+.formNames{
     display: flex;
     flex-direction: column;
     padding: 50px;
     background-color: linen;
 }
-
+.formAgain{
+    display: none;
+    visibility: hidden;
+    flex-direction: column;
+    padding: 50px;
+    background-color: linen;
+}
 input{
     width:150px;
     margin-bottom: 20px;
@@ -56,6 +62,7 @@ input{
     border-radius: .5rem;
     border: 2px white solid;
 }
+
 label{
     margin-bottom: 5px;
 }
