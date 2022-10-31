@@ -1,5 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // create a player, name and X or O
+    // use shorthand to return accesible variables
+    const Player = (name, piece) => {
+        return {name, piece}
+    }
+
+    form = document.querySelector('form')
+    backForm = document.querySelector('.backForm')
+    form.addEventListener('submit', (event)=>{
+        // stop submit
+        event.preventDefault();
+        one = form.one.value
+        two = form.two.value
+
+        // hide from
+        form.style.display = "none"
+        form.style.visibility = "hidden"
+        backForm.style.display = "none"
+        backForm.style.visibility = "hidden"
+
+        // create players from inputted name
+        const playerOne = Player(one, "X")
+        const playerTwo = Player(two, "O")
+
+        // set second player first so it's skipped within logic
+        let last = "O"
+        let playerCurrent = playerTwo
+        document.addEventListener('click',(event)=>{
+            if(event.target.className == "square"){
+                if(!event.target.hasChildNodes()){ 
+                    // update DOM where possible
+                    last == "O" ? last = "X" : last = "O";
+                    let p = document.createElement("p")
+                    p.textContent = last
+                    event.target.append(p)
+
+                    // set the correct person and their choice
+                    playerCurrent == playerTwo ? playerCurrent = playerOne : playerCurrent = playerTwo
+                    let choice = event.target.getAttribute("index")
+
+                    // Pass to function
+                    Flow.play(playerCurrent, choice)
+                }  
+            }
+        })
+    })
+
     // add 9 grids to page with index of its corresponding square.
     grid = document.querySelector(".myGrid")
     for(let i = 0; i < 9; i++){
@@ -8,37 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         div.className = "square"
         grid.append(div)
     }
-
-    // create a player, name and X or O
-    // use shorthand to return accesible variables
-    const Player = (name, piece) => {
-        return {name, piece}
-    }
-
-    // Create player - will be dynamic
-    const playerOne = Player("Aaron", "X")
-    const playerTwo = Player("Anna", "O")
-
-    let last = "O"
-    let playerCurrent = playerTwo
-    document.addEventListener('click',(event)=>{
-        if(event.target.className == "square"){
-            if(!event.target.hasChildNodes()){ 
-                // update DOM where possible
-                last == "O" ? last = "X" : last = "O";
-                let p = document.createElement("p")
-                p.textContent = last
-                event.target.append(p)
-
-                // set the correct person and their choice
-                playerCurrent == playerTwo ? playerCurrent = playerOne : playerCurrent = playerTwo
-                let choice = event.target.getAttribute("index")
-
-                // Pass to function
-                Flow.play(playerCurrent, choice)
-            }  
-        }
-    })
 
     // below is the game.
     const GameBoard = (function(){
