@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(Boolean(GameBoard.checkWinner())){
                 let winner = GameBoard.checkWinner()
                 outcome.textContent = winner
-
+                // wait 1.5 seconds and load again function
                 setTimeout(function() { again() }, 1500);
             }
         }
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             _choose(player, choice)
         }
 
-        const again = (name) => {
+        const again = () => {
             backForm.style.display = "grid"
             backForm.style.visibility = "visible"
             formAgain.style.display = "flex"
