@@ -15,11 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let last = "O"
     document.addEventListener('click',(event)=>{
-        last == "O" ? last = "X" :  last = "O";
-        let p = document.createElement("p")
-        p.innerHTML = last
-        event.target.append(p)
-        return event.target.getAttribute("index")
+        if(event.target.className == "square"){
+            if(!event.target.hasChildNodes()){ 
+                last == "O" ? last = "X" : last = "O";
+                let p = document.createElement("p")
+                p.textContent = last
+                event.target.append(p)
+                return event.target.getAttribute("index")
+            }
+           
+        }
     })
 
     // below is the game.
