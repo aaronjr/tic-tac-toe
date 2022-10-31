@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     backForm = document.querySelector('.backForm')
     // play again form
     formAgain = document.querySelector('.formAgain')
+    // outcome div
+    const outcome = document.querySelector('.outcome')
 
     // check for form submission and save names
     formNames.addEventListener('submit', (event)=>{
@@ -83,6 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
             7 : '', 8 : '', 9 : ''
         }
 
+        const clearBoard = function(){
+            for(let slot in _board){
+                _board[slot] = ""
+            }
+        }
+
         // update board, 
         const updateBoard = function(player, slot){   
             if(_board[slot] == ""){
@@ -126,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // return functions
-        return {updateBoard, gameOver, checkWinner}
+        return {updateBoard, gameOver, checkWinner, clearBoard}
     })()
 
     // controls flow of the game
@@ -141,16 +149,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // if 9 squares played and no winner - display draw
             if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
-                let outcome = document.querySelector('.outcome')
                 outcome.textContent = "Draw"
             }
             // if winner, display name
             if(Boolean(GameBoard.checkWinner())){
-                let outcome = document.querySelector('.outcome')
                 let winner = GameBoard.checkWinner()
                 outcome.textContent = winner
 
-                setTimeout(function() { again() }, 2000);
+                setTimeout(function() { again() }, 1500);
             }
         }
         // call private function with players name and their choice
@@ -166,10 +172,27 @@ document.addEventListener('DOMContentLoaded', () => {
             formAgain.style.visibility = "visible"
 
             formAgain.addEventListener('submit', (event)=>{
-                event.preventDefault
-                // wipe board clean
-                // give the object of each player
-                console.log(playerOne, playerTwo)
+                 // stop submit
+                event.preventDefault();
+
+                // clear all squares
+                let square = document.querySelectorAll('.square')
+                square.forEach(element => {
+                    while(element.firstChild){
+                        element.removeChild(element.lastChild);
+                    }
+                });
+                // hide form
+                backForm.style.display = "none"
+                backForm.style.visibility = "hidden"
+                formAgain.style.display = "none"
+                formAgain.style.visibility = "hidden"
+
+                // reset board to empty and outcome
+                GameBoard.clearBoard()
+                outcome.textContent = ""
+                // the game will now continue as long as yes is clicked
+                // users will alternate goes
             })
         }
         return {play}
