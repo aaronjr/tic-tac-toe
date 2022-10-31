@@ -9,21 +9,34 @@ document.addEventListener('DOMContentLoaded', () => {
         grid.append(div)
     }
 
-    const getChoice = function(choice = 5){
-        return choice
+    // create a player, name and X or O
+    // use shorthand to return accesible variables
+    const Player = (name, piece) => {
+        return {name, piece}
     }
 
+    // Create player - will be dynamic
+    const playerOne = Player("Aaron", "X")
+    const playerTwo = Player("Anna", "O")
+
     let last = "O"
+    let playerCurrent = playerTwo
     document.addEventListener('click',(event)=>{
         if(event.target.className == "square"){
             if(!event.target.hasChildNodes()){ 
+                // update DOM where possible
                 last == "O" ? last = "X" : last = "O";
                 let p = document.createElement("p")
                 p.textContent = last
                 event.target.append(p)
-                return event.target.getAttribute("index")
-            }
-           
+
+                // set the correct person and their choice
+                playerCurrent == playerTwo ? playerCurrent = playerOne : playerCurrent = playerTwo
+                let choice = event.target.getAttribute("index")
+
+                // Pass to function
+                Flow.play(playerCurrent, choice)
+            }  
         }
     })
 
@@ -41,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateBoard = function(player, slot){
             if(_board[slot] == ""){
                 _board[slot] = player.name
-                // player.piece
             }
             else{
                 updateBoard(player, prompt("Choose again: 1-9"))
@@ -89,36 +101,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // controls flow of the game
     const Flow = (function(){
         'use strict'
-        const play = (one, two) => {
-            // prompt the next player and update board
-            const choose = (player) => {
-                if(!GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
-                    let choice = prompt("1 - 9")
-                    GameBoard.updateBoard(player, choice)
-                    player == one ? choose(two) : choose(one)
-                }
-                else if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
-                    return console.log("Draw")
-                }
-                else{
-                    return console.log(GameBoard.checkWinner())
-                }
+        const _choose = (player, choice) => {
+            if(!GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                // add choice
+                GameBoard.updateBoard(player, choice)
             }
+            if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                return console.log("Draw")
+            }
+            if(Boolean(GameBoard.checkWinner())){
+                return console.log(GameBoard.checkWinner())
+            }
+        }
+        const play = (player, choice) => {    
             // call function inside of play
-            choose(one)
+            _choose(player, choice)
         }
         return {play}
     })()
 
-    // create a player, name and X or O
-    // use shorthand to return accesible variables
-    const Player = (name, piece) => {
-        return {name, piece}
-    }
-
-    // Create player - will be dynamic
-    const playerOne = Player("Aaron", "X")
-    const playerTwo = Player("Anna", "O")
-
-    // Flow.play(playerTwo, playerOne)
 })

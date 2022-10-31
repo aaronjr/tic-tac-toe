@@ -28,3 +28,25 @@ body{
     font-size: xx-large;
     font-weight: bold;
 }
+
+.backForm{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    display: grid;
+    place-items: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+
+input{
+    width:150px;
+
+}

@@ -1,0 +1,36 @@
+// controls flow of the game
+    const Flow = (function(){
+        'use strict'
+        const play = (one, two) => {
+            // prompt the next player and update board
+            const choose = (player) => {
+                if(!GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                    // add choice
+                    GameBoard.updateBoard(player, choice)
+                    player == one ? choose(two) : choose(one)
+                }
+                else if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                    return console.log("Draw")
+                }
+                else{
+                    return console.log(GameBoard.checkWinner())
+                }
+            }
+            // call function inside of play
+            choose(one)
+        }
+        return {play}
+    })()
+
+
+
+if(!GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                    // add choice
+                    GameBoard.updateBoard(playerCurrent, choice)
+                }
+                if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                    return console.log("Draw")
+                }
+                if (Boolean(GameBoard.checkWinner())){
+                    return console.log(GameBoard.checkWinner())
+                }
