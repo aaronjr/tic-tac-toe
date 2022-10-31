@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateBoard = function(player, slot){
             if(_board[slot] == ""){
                 _board[slot] = player.name
+                // player.piece
             }
             else{
                 updateBoard(player, prompt("Choose again: 1-9"))
@@ -39,40 +40,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 let first = _board[options[i][0]]
                 let second = _board[options[i][1]]
                 let third = _board[options[i][2]]
-                if(!options[i].includes("") && first === second && second === third && first === third){
-                    console.log(`winner is ${first} winning blocks ${options[i][0]}, ${options[i][1]}, ${options[i][2]} `)
+            
+                if((first != "" && second != "" && third != "") && (first === second && second === third)){
+                    // return name of who won
                     return first
                 }
             }
         }
 
-        // check for 9 inputs if "" is present
+        // check through 9 squares and see if any are blank
         const gameOver = function(){
-            //for(let key in _board){
-            //    _board[key] = "X"
-            //}
-            console.log(_board)
             return Object.values(_board).includes("") ? false : true
         }
-        
+
+        // return functions
         return {updateBoard, gameOver, checkWinner}
     })()
 
+    // controls flow of the game
     const Flow = (function(){
         'use strict'
-        let play = (one, two) => {
-            // check if game over - if not accept inputs.
-            // check again in the middle as odd amount of total turns. 
-            while(!GameBoard.gameOver() || GameBoard.checkWinner){
-                let oneChoice = prompt("1 - 9")
-                GameBoard.updateBoard(one, oneChoice)
-                if(GameBoard.gameOver() == true || GameBoard.checkWinner == true){
-                    return `Game over, winner is ${GameBoard.checkWinner}`
+        const play = (one, two) => {
+            // prompt the next player and update board
+            const choose = (player) => {
+                if(!GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                    let choice = prompt("1 - 9")
+                    GameBoard.updateBoard(player, choice)
+                    player == one ? choose(two) : choose(one)
                 }
-                let twoChoice = prompt("1 - 9")
-                GameBoard.updateBoard(two, twoChoice)
+                else if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+                    return console.log("Draw")
+                }
+                else{
+                    return console.log(GameBoard.checkWinner())
+                }
             }
-
+            // call function inside of play
+            choose(one)
         }
         return {play}
     })()
@@ -87,15 +91,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerOne = Player("Aaron", "X")
     const playerTwo = Player("Anna", "O")
 
-    // choice = prompt("x or o")
-    // slot = prompt("1 - 9")
-    // gameBoard.updateBoard(choice, slot)
-    // console.log(playerOne.name)
-    // console.log(playerOne.piece)
-
-    //GameBoard.updateBoard(playerOne.name, 6)
-    // console.log(GameBoard.gameOver())
     Flow.play(playerTwo, playerOne)
-
-   //console.log(GameBoard.checkWinner())
 })
