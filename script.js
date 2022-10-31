@@ -91,5 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerOne = Player("Aaron", "X")
     const playerTwo = Player("Anna", "O")
 
-    Flow.play(playerTwo, playerOne)
+    // Flow.play(playerTwo, playerOne)
+
+    // add 9 grids to page with index of its corresponding square.
+    grid = document.querySelector(".myGrid")
+    for(let i = 0; i < 9; i++){
+        div = document.createElement('div')
+        div.setAttribute("index", i +1)
+        div.className = "square"
+        grid.append(div)
+    }
 })
