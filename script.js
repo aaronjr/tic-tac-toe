@@ -1,4 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // add 9 grids to page with index of its corresponding square.
+    grid = document.querySelector(".myGrid")
+    for(let i = 0; i < 9; i++){
+        div = document.createElement('div')
+        div.setAttribute("index", i +1)
+        div.className = "square"
+        grid.append(div)
+    }
+
+    const getChoice = function(choice = 5){
+        return choice
+    }
+
+    let last = "O"
+    document.addEventListener('click',(event)=>{
+        last == "O" ? last = "X" :  last = "O";
+        let p = document.createElement("p")
+        p.innerHTML = last
+        event.target.append(p)
+        return event.target.getAttribute("index")
+    })
+
+    // below is the game.
     const GameBoard = (function(){
         'use strict'
         // 9 squares of board
@@ -92,13 +116,4 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerTwo = Player("Anna", "O")
 
     // Flow.play(playerTwo, playerOne)
-
-    // add 9 grids to page with index of its corresponding square.
-    grid = document.querySelector(".myGrid")
-    for(let i = 0; i < 9; i++){
-        div = document.createElement('div')
-        div.setAttribute("index", i +1)
-        div.className = "square"
-        grid.append(div)
-    }
 })
