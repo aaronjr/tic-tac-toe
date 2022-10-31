@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const Player = (name, piece) => {
         return {name, piece}
     }
-    let playerOne
-    let playerTwo
 
     // get items for making input form float on screen
     formNames = document.querySelector('.formNames')
@@ -21,10 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // stop submit
         event.preventDefault();
 
-        // get inputted names
-        let one = formNames.one.value
-        let two = formNames.two.value
-
         // hide form
         formNames.style.display = "none"
         formNames.style.visibility = "hidden"
@@ -32,38 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         backForm.style.visibility = "hidden"
 
         // create players from inputted name
-        playerOne = Player(one, "X")
-        playerTwo = Player(two, "O")
+        playerOne = Player(formNames.one.value, "X")
+        playerTwo = Player(formNames.two.value, "O")
 
-        // set second player first so it's skipped within logic
-        let last = "O"
-        let playerCurrent = playerTwo
-
-        // listen for clicked square
-        document.addEventListener('click',(event)=>{
-            if(event.target.className == "square"){
-                // check for empty square
-                if(!event.target.hasChildNodes()){ 
-
-                    // check game hasn't finished
-                    if(!GameBoard.gameOver()){
-
-                        // update DOM
-                        last == "O" ? last = "X" : last = "O";
-                        let p = document.createElement("p")
-                        p.textContent = last
-                        event.target.append(p)
-
-                        // set the correct person and their choice
-                        playerCurrent == playerTwo ? playerCurrent = playerOne : playerCurrent = playerTwo
-                        let choice = event.target.getAttribute("index")
-
-                        // Pass to function
-                        Flow.play(playerCurrent, choice)
-                    }
-                }  
-            }
-        })
+        // call function to listen for events
+        Flow.listen(playerOne, playerTwo)
     })
 
     // add 9 grids to page with index of its corresponding square.
@@ -85,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             7 : '', 8 : '', 9 : ''
         }
 
+        // loop over the board and reset to empty values
         const clearBoard = function(){
             for(let slot in _board){
                 _board[slot] = ""
@@ -99,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // check for a winner
         const checkWinner = function(){
+            // empty array
             let options = []
 
             // possible lines to win on
@@ -149,12 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // if 9 squares played and no winner - display draw
             if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
-                outcome.textContent = "Draw"
+                outcome.textContent = "It's a draw"
+                setTimeout(function() { again() }, 1500);
             }
             // if winner, display name
             if(Boolean(GameBoard.checkWinner())){
                 let winner = GameBoard.checkWinner()
-                outcome.textContent = winner
+                outcome.textContent = `${winner} won!`
                 // wait 1.5 seconds and load again function
                 setTimeout(function() { again() }, 1500);
             }
@@ -165,13 +135,49 @@ document.addEventListener('DOMContentLoaded', () => {
             _choose(player, choice)
         }
 
+        const listen = (playerOne, playerTwo) =>{
+            // set second player first so it's skipped within logic
+            let last = "O"
+            let playerCurrent = playerTwo
+
+            // listen for clicked square
+            document.addEventListener('click',(event)=>{
+                if(event.target.className == "square"){
+                    // check for empty square
+                    if(!event.target.hasChildNodes()){ 
+
+                        // check game hasn't finished
+                        if(!GameBoard.gameOver()){
+
+                            // update DOM
+                            last == "O" ? last = "X" : last = "O";
+                            let p = document.createElement("p")
+                            p.textContent = last
+                            event.target.append(p)
+
+                            // set the correct person and their choice - makes player one first
+                            playerCurrent == playerTwo ? playerCurrent = playerOne : playerCurrent = playerTwo
+                            let choice = event.target.getAttribute("index")
+
+                            // Pass to function
+                            Flow.play(playerCurrent, choice)
+                        }
+                    }  
+                }
+            })
+        }
+
+        // function to call game again
         const again = () => {
+            // show second from
             backForm.style.display = "grid"
             backForm.style.visibility = "visible"
             formAgain.style.display = "flex"
             formAgain.style.visibility = "visible"
 
+            // check for form being submitted
             formAgain.addEventListener('submit', (event)=>{
+                console.log(event)
                  // stop submit
                 event.preventDefault();
 
@@ -194,7 +200,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // the game will now continue as long as yes is clicked
                 // users will alternate goes
             })
+            document.addEventListener('click', (event)=>{
+                if(event.target.className == "newNames"){
+                    location.reload();
+                }
+            })
         }
-        return {play}
+        return {play, listen}
     })()
 })
