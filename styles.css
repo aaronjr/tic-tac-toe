@@ -7,6 +7,7 @@ body{
 .container{
     display: grid;
     align-items: center;
+    grid-template-rows: 100px 1fr;
 }
 
 .myGrid{
@@ -44,9 +45,22 @@ form{
     display: flex;
     flex-direction: column;
     padding: 50px;
+    background-color: linen;
 }
 
 input{
     width:150px;
-
+    margin-bottom: 20px;
+    height: 1.5rem;
+    padding-left: 10px;
+    border-radius: .5rem;
+    border: 2px white solid;
+}
+label{
+    margin-bottom: 5px;
+}
+button{
+    height: 2rem;
+    border-radius: .5rem;
+    border: 2px black solid;
 }

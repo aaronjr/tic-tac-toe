@@ -5,14 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const Player = (name, piece) => {
         return {name, piece}
     }
-
     form = document.querySelector('form')
     backForm = document.querySelector('.backForm')
+    // check for form submission and save names
     form.addEventListener('submit', (event)=>{
         // stop submit
         event.preventDefault();
-        one = form.one.value
-        two = form.two.value
+        let one = form.one.value
+        let two = form.two.value
 
         // hide from
         form.style.display = "none"
@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click',(event)=>{
             if(event.target.className == "square"){
                 if(!event.target.hasChildNodes()){ 
-                    // update DOM where possible
+                    if(!GameBoard.gameOver()){
+                        // update DOM where possible
                     last == "O" ? last = "X" : last = "O";
                     let p = document.createElement("p")
                     p.textContent = last
@@ -42,6 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Pass to function
                     Flow.play(playerCurrent, choice)
+                    }
+                    else{
+                        // load a form to play again
+                    }
+                    
                 }  
             }
         })
@@ -70,9 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateBoard = function(player, slot){
             if(_board[slot] == ""){
                 _board[slot] = player.name
-            }
-            else{
-                updateBoard(player, prompt("Choose again: 1-9"))
             }
         }
         // check for a winner
@@ -107,7 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // check through 9 squares and see if any are blank
         const gameOver = function(){
-            return Object.values(_board).includes("") ? false : true
+            if ( Object.values(_board).includes("") && Boolean(!GameBoard.checkWinner())){
+                return false 
+            }
+            else{
+                return true 
+            }
+                
         }
 
         // return functions
@@ -118,15 +127,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const Flow = (function(){
         'use strict'
         const _choose = (player, choice) => {
-            if(!GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
+            if(!GameBoard.gameOver()){
                 // add choice
                 GameBoard.updateBoard(player, choice)
             }
             if(GameBoard.gameOver() && Boolean(!GameBoard.checkWinner())){
-                return console.log("Draw")
+                let outcome = document.querySelector('.outcome')
+                outcome.textContent = "Draw"
             }
             if(Boolean(GameBoard.checkWinner())){
-                return console.log(GameBoard.checkWinner())
+                let outcome = document.querySelector('.outcome')
+                let winner = GameBoard.checkWinner()
+                outcome.textContent = winner
             }
         }
         const play = (player, choice) => {    
