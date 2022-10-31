@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         // call private function with players name and their choice
-        const play = (player, choice) => {    
+        const _play = (player, choice) => {    
             // call function inside of play
             _choose(player, choice)
         }
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             let choice = event.target.getAttribute("index")
 
                             // Pass to function
-                            Flow.play(playerCurrent, choice)
+                            _play(playerCurrent, choice)
                         }
                     }  
                 }
@@ -206,6 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
         }
-        return {play, listen}
+        return {listen}
     })()
 })
