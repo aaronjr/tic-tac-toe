@@ -36,7 +36,7 @@ body{
 }
 
 .square p{
-    font-size:xxx-large;
+    font-size: -webkit-xxx-large;
     font-weight: 100;
     padding: 0;
     margin: 0;
@@ -104,5 +104,5 @@ button:hover{
 }
 .outcome{
     text-align: center;
-    font-size: xxx-large;
+    font-size: -webkit-xxx-large;
 }
